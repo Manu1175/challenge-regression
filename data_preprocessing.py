@@ -98,8 +98,9 @@ class Immo_Preprocessing:
         self.df=self.df[~self.df.index.isin(outliers.index)]
 
         self.df = self.df[~self.df['habitablesurface'].isna()]
-        self.df['habitablesurface'] = self.df['habitablesurface'].astype(int)
-        self.df = self.df.drop(self.df[self.df['habitablesurface'] > 2000].index)   
+        self.df['habitablesurface'] = self.df['habitablesurface'].astype(float)
+        self.df = self.df.drop(self.df[self.df['habitablesurface'] > 1500].index)
+        self.df = self.df.drop(self.df[self.df['bedroomcount'] > 20].index)   
 
     def eliminate_postcode_small_number(self):
         # Eliminates postcodes < 10 properties

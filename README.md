@@ -40,15 +40,15 @@ The dataset contains **38,979** records with the following columns:
 random_state=42)
    
 3. Model selection
-
-  * The following models have been selected for all features in the dataset:
-        -LinearRegression combined with PolynomialFeatures
-        -Ridge
-        -Lasso
-        -ElasticNet
-        -GradientBoostingRegressor
-        -RandomForestRegressor
-        -XGBRegressor
+   
+* The following models have been selected for all features in the dataset:
+  - LinearRegression combined with PolynomialFeatures
+  - Ridge
+  - Lasso
+  - ElasticNet
+  - GradientBoostingRegressor
+  - RandomForestRegressor
+  - XGBRegressor
 
    
 4. Apply your model

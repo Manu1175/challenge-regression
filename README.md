@@ -64,8 +64,23 @@ random_state=42)
 | GradientBoosting          | 0.70     | 0.68    | 91,105€    | 93,194€   | 66,976€   | 68,222€  | 0.70      | 0.68     |
 | RandomForest              | 0.96     | 0.71    | 33,330€    | 88,819€   | 23,531€   | 63,308€  | 0.96      | 0.71     |
 | XGBoost                   | 0.83     | 0.74    | 67,642€    | 84,451€   | 49,157€   | 60,220€  | 0.83      | 0.74     |
+
+   **RandomForest** Best r2 score train, less test showing overfitting but good prediction
+   **XGBoost** Second best r2 score train, and less difference showing less overfitting
    
 5. Model evaluation
+
+## Slight improvement with transforming surface to natural logarithm:
+
+| Algorithm                  | r2_train | r2_test | rmse_train | rmse_test | mae_train | mae_test | evs_train | evs_test |
+|:--------------------------|---------:|--------:|-----------:|----------:|----------:|---------:|----------:|---------:|
+| LinearRegression/Polynomial|     0.63 |    0.63 |     99,862€|   100,435€|    73,552€|   73,817€|      0.63 |     0.63 |
+| Ridge                     |     0.54 |    0.53 |    111,537€|   112,618€|    84,327€|   84,582€|      0.54 |     0.53 |
+| Lasso                     |     0.54 |    0.53 |    111,537€|   112,618€|    84,327€|   84,582€|      0.54 |     0.53 |
+| ElasticNet                |     0.50 |    0.49 |    117,046€|   117,678€|    88,287€|   88,435€|      0.50 |     0.49 |
+| GradientBoosting          |     0.70 |    0.68 |     91,105€|    93,181€|    66,976€|   68,218€|      0.70 |     0.68 |
+| RandomForest              |     0.96 |    0.71 |     33,329€|    88,797€|    23,540€|   63,293€|      0.96 |     0.71 |
+| XGBoost                   |     0.83 |    0.74 |     67,642€|    84,451€|    49,157€|   60,220€|      0.83 |     0.74 |
 
 # Installation
 

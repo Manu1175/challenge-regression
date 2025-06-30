@@ -104,6 +104,13 @@ The project requires the following Python packages:
 # Usage
 
 # Visuals
+## Correlation of all features after preprocessing cleaned data:
+![image](https://github.com/user-attachments/assets/b41c64cd-8658-4480-9fc6-420a5709e586)
+
+## Showing features importance using Random Forrester Regressor:
+![newplot](https://github.com/user-attachments/assets/9278b651-3a6e-4512-9ff7-78c24ade909f)
+
+
 
 # Contributors
  * Caterina

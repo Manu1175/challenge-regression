@@ -62,6 +62,7 @@ class Immo_Preprocessing:
             )
             print(self.df['hasparking'].value_counts())
 
+
     # Add Region column
     def add_region_column(self):
         province_to_region = {
@@ -147,6 +148,26 @@ class Immo_Preprocessing:
     # Drop duplicates
         self.df.drop_duplicates(inplace=True)
         
+    def latitude_longitude_columns(self, filepath2):
+        df_geo = pd.read_csv(filepath2, sep=';')
+        #'data/georef-belgium-postal-codes@public.csv'
+        pc_geo_dict = {}
+        for pc in self.df['postcode'].unique():
+            geo_point = df_geo.loc[df_geo['Post code'] == pc, 'Geo Point'].values
+            if len(geo_point) > 0:
+                pc_geo_dict[pc] = geo_point[0]
+            else:
+                pc_geo_dict[pc] = None
+        self.df['geocode'] = self.df['postcode'].map(pc_geo_dict)
+
+        self.df[['latitude', 'longitude']] = self.df['geocode'].str.split(',', expand=True)
+
+        self.df['latitude'] = self.df['latitude'].astype(float)
+        self.df['longitude'] = self.df['longitude'].astype(float)
+
+        self.df.drop(columns=['geocode'], inplace=True)
+        self.df.drop(columns=['postcode'], inplace=True)
+        
     def save(self, output_path):
             self.df.to_csv(output_path, index=False)
             #df.to_csv('data_cleaned.csv')
@@ -162,9 +183,10 @@ class Immo_Preprocessing:
         self.oe_ohe_processing()
         self.drop_remaining_columns()
         self.drop_duplicates()
+        self.latitude_longitude_columns('data/georef-belgium-postal-codes@public.csv')
         self.df.info()
 
 if __name__ == "__main__":
     processor = Immo_Preprocessing('data/immoweb-dataset.csv')
     processor.data_pre_processing()
-    processor.save('data_cleaned.csv')
+    processor.save('data/data_cleaned.csv')

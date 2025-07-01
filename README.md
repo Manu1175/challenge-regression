@@ -119,11 +119,20 @@ The project requires the following Python packages:
 # Usage
 
 # Visuals
+## Predictions vs Actual values using Linear Regression:
+![image](https://github.com/user-attachments/assets/53f05524-836f-49cb-b2bc-a537ab5df14d)
+
+## Distribution of residuals (y test - y predict) on Linear Regression:
+![image](https://github.com/user-attachments/assets/87bcf34f-bd1a-4f18-b85e-219e81362c92)
+
 ## Correlation of all features after preprocessing cleaned data:
 ![image](https://github.com/user-attachments/assets/b41c64cd-8658-4480-9fc6-420a5709e586)
 
 ## Showing features importance using Random Forrester Regressor:
 ![image](https://github.com/user-attachments/assets/54068764-336d-4250-b69a-93f49ac03f67)
+
+## Model comparison showing R2 score for training and test sets
+![Model comparisons graphic R2](https://github.com/user-attachments/assets/8ad40a7e-9053-4ba4-bd77-3d2043ddc173)
 
 # Contributors
  * Caterina

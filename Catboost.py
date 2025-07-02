@@ -1,3 +1,28 @@
+# Utils functions
+from utils import regResults, splitDF, plotCatBoostImportance
+
+# Data wrangling libraries
+import pandas as pd
+import numpy as np
+import time
+import warnings
+warnings.filterwarnings("ignore") 
+
+
+# Preprocessing libraries
+from sklearn.model_selection import KFold, cross_val_predict
+
+# Regression libraries
+from catboost import CatBoostRegressor
+
+
+# Output settings
+pd.set_option('display.max_columns', None) # display all columns
+pd.set_option('display.expand_frame_repr', False) # print all columns and in the same line
+pd.set_option('display.max_colwidth', None) # display the full content of each cell
+pd.set_option('display.float_format', lambda x: '%.3f' %x) # floats to be displayed with 3 decimal places
+
+
 def modelCAT(df, target, obs, results_df=None):
     """
     Function to run CatBoost algorithm with CV=10 and default parameters
@@ -53,12 +78,16 @@ def modelCAT(df, target, obs, results_df=None):
     
     return results_df, catboost_importance
 
+# Read the csv data
+df = pd.read_csv("data/data_cleaned.csv")
+target = 'price'
+df_log = df.assign(price=np.log1p(df['price']))
 
 # Rerunning our best model with all features
 # and finding most important features
 
 start = time.time()
-results_df, catboost_importance = modelCAT(df_log, target, "Rerun - All features", results_df)
+results_df, catboost_importance = modelCAT(df_log, target, "Rerun - All features")
 end = time.time()
 
 code_run = round((end - start) / 60, 3)
@@ -68,20 +97,5 @@ results_df = results_df.sort_values("RMSE (Test)", ascending=True)
 
 print("\nSummary of Regression Results:")
 print(results_df)
-
-
-def plotCatBoostImportance(catboost_importance):
-    """
-    Plot the features importance in descending order
-    """
-   
-    plt.figure(figsize=(8, 5))
-    sns.barplot(data=catboost_importance, x="Importance", y="Feature", color="steelblue")
-    plt.title(f"CatBoost - Feature Importances", fontsize=13, fontweight='bold')
-    plt.ylabel("")
-    plt.xlabel("")
-    plt.tight_layout()
-    plt.show()
-
 
 plotCatBoostImportance(catboost_importance)

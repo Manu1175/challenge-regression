@@ -70,7 +70,8 @@ random_state=42)
    
 5. Model evaluation
 
-## Slight improvement with transforming surface to natural logarithm:
+## Slight improvement with transforming price to natural logarithm:
+
 
 | Algorithm                  | r2_train | r2_test | rmse_train | rmse_test | mae_train | mae_test | evs_train | evs_test |
 |:--------------------------|---------:|--------:|-----------:|----------:|----------:|---------:|----------:|---------:|
@@ -81,6 +82,10 @@ random_state=42)
 | GradientBoosting          |     0.70 |    0.68 |     91,105€|    93,181€|    66,976€|   68,218€|      0.70 |     0.68 |
 | RandomForest              |     0.96 |    0.71 |     33,329€|    88,797€|    23,540€|   63,293€|      0.96 |     0.71 |
 | XGBoost                   |     0.83 |    0.74 |     67,642€|    84,451€|    49,157€|   60,220€|      0.83 |     0.74 |
+
+## Improvement transforming price to natural logarithm
+
+![image](https://github.com/user-attachments/assets/dfea9d24-9232-4626-818b-4e99f8b71ed5)
 
 # Installation
 

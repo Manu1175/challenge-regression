@@ -1,6 +1,5 @@
 # Preprocessing libraries
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.model_selection import KFold, RepeatedKFold, cross_val_predict, GridSearchCV, RandomizedSearchCV, train_test_split
 
 # Data wrangling libraries
 import numpy as np
@@ -10,49 +9,35 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def regResults(obs, name, y_true, y_pred):
+def regResults(features, model_name, y_true_log, y_pred_log):
     """
-    Function to return regression metrics
+    Compute regression metrics (R², MAE, RMSE) on the original scale
+    by converting log-transformed predictions and targets back to price.
+    
+    Parameters:
+        features (str): Features used.
+        model_name (str): Name of the model.
+        y_true_log (array-like): Log-transformed true target values.
+        y_pred_log (array-like): Log-transformed predicted values.
+        
+    Returns:
+        dict: Regression metrics on the original price scale.
     """
+    # Convert back from log1p to original scale
+    y_true = np.expm1(y_true_log)
+    y_pred = np.expm1(y_pred_log)
+
     r2 = r2_score(y_true, y_pred)
     mae = mean_absolute_error(y_true, y_pred)
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
 
-    # Return a dictionary with the metrics
     return {
-        "Features": obs,
-        "Model": name,
+        "Features": features,
+        "Model": model_name,
         "R² Score": r2,
         "MAE": mae,
         "RMSE": rmse
     }
-
-def splitDF(n, df, target):
-    """
-    Function to split the dataframe based on the requirements on the regression model we need to run
-    """
-    
-    # First split: isolate the target variable
-    y = df[target]
-    X = df.drop([target], axis=1)
-    
-    # Second split: train and test as needed to run cross_val_predict
-    X_train_full, X_test, y_train_full, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
-
-    # Further split training: training and validation sets for early stopping
-    X_train, X_val, y_train, y_val = train_test_split(X_train_full, y_train_full, test_size=0.2, random_state=123)
-   
-    if n == 1:
-        return X, y
-    
-    elif n == 2:
-        return X_train_full, y_train_full, X_test, y_test
-
-    elif n == 3:
-        return X_test, X_train, X_val, y_test, y_train, y_val
-    
-    else:
-        raise ValueError(f"Invalid mode n={n}. Must be 1, 2 or 3.")
 
 def plotCatBoostImportance(catboost_importance):
     """

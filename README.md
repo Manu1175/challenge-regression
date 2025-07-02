@@ -70,7 +70,7 @@ random_state=42)
    
 5. Model evaluation
 
-## Slight improvement with transforming price to natural logarithm:
+## Slight improvement with transforming surface to natural logarithm:
 
 
 | Algorithm                  | r2_train | r2_test | rmse_train | rmse_test | mae_train | mae_test | evs_train | evs_test |

@@ -46,7 +46,7 @@ def plotCatBoostImportance(catboost_importance, title):
    
     plt.figure(figsize=(8, 5))
     sns.barplot(data=catboost_importance, x="Importance", y="Feature", color="steelblue")
-    plt.title(f"CatBoost - Feature Importances", fontsize=13, fontweight='bold')
+    plt.title(f"CatBoost - {title}", fontsize=13, fontweight='bold')
     plt.ylabel("")
     plt.xlabel("")
     plt.tight_layout()

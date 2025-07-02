@@ -1,5 +1,5 @@
 # Utils functions
-from utils import regResults, splitDF, plotCatBoostImportance
+from utils import regResults, plotCatBoostImportance
 
 # Data wrangling libraries
 import pandas as pd
@@ -9,12 +9,11 @@ import warnings
 warnings.filterwarnings("ignore") 
 
 
-# Preprocessing libraries
 from sklearn.model_selection import KFold, cross_val_predict
+from sklearn.model_selection import KFold, RepeatedKFold, cross_val_predict, GridSearchCV, RandomizedSearchCV, train_test_split
 
 # Regression libraries
 from catboost import CatBoostRegressor
-
 
 # Output settings
 pd.set_option('display.max_columns', None) # display all columns
@@ -24,58 +23,54 @@ pd.set_option('display.float_format', lambda x: '%.3f' %x) # floats to be displa
 
 
 def modelCAT(df, target, obs, results_df=None):
-    """
-    Function to run CatBoost algorithm with CV=10 and default parameters
-    Returns the regression results and the feature importances
-    """
+    # Split into train/test
+    X = df.drop(columns=[target])
+    y = df[target]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
 
-    # Split features and target
-    X, y = splitDF(1, df, target)
-    
     # Initialize model
     model = CatBoostRegressor(verbose=0, random_state=123)
-    
-    # Setup 10-fold CV
+
+    # Fit on training set
+    model.fit(X_train, y_train)
+
+    # Predict on train and test sets
+    y_train_pred = model.predict(X_train)
+    y_test_pred = model.predict(X_test)
+
+    # Cross-validation on training set
     cv = KFold(n_splits=10, shuffle=True, random_state=123)
-    
-    # Cross-validated predictions
-    y_cv_pred = cross_val_predict(model, X, y, cv=cv)
-    
-    # Fit on full data
-    model.fit(X, y)
-    
-    # Predict on full data
-    y_pred = model.predict(X)
-    
+    y_cv_pred = cross_val_predict(model, X_train, y_train, cv=cv)
+
     # Get regression results
-    results = regResults(obs, "CatBoost", y, y_pred)
-    
-    # Prepare results dictionary for appending
+    train_results = regResults(obs, "CatBoost", y_train, y_train_pred)
+    test_results = regResults(obs, "CatBoost", y_test, y_test_pred)
+    cv_results = regResults(obs, "CatBoost CV", y_train, y_cv_pred)
+
+    # Prepare results dictionary
     combined_result = {
         "Model": "CatBoost",
         "Features": obs,
         "Runtime (min)": None,
-        # Train metrics (full data)
-        **{k + " (Train)": v for k, v in results.items() if k not in ["Model", "Observations", "Features"]},
-        # CV metrics from cross_val_predict
-        **{k + " (Test)": v for k, v in regResults(obs, "CatBoost CV", y, y_cv_pred).items()
-           if k not in ["Model", "Observations", "Features"]}
+        **{k + " (Train)": v for k, v in train_results.items() if k not in ["Model", "Observations", "Features"]},
+        **{k + " (CV)": v for k, v in cv_results.items() if k not in ["Model", "Observations", "Features"]},
+        **{k + " (Test)": v for k, v in test_results.items() if k not in ["Model", "Observations", "Features"]},
     }
-    
+
     # Append to results_df
     if results_df is not None:
         results_df = pd.concat([results_df, pd.DataFrame([combined_result])], ignore_index=True)
     else:
         results_df = pd.DataFrame([combined_result])
-    
-    # Feature importances sorted descending
+
+    # Feature importances from train set
     importances = model.get_feature_importance()
-    feature_names = X.columns
+    feature_names = X_train.columns
     catboost_importance = pd.DataFrame({
         "Feature": feature_names,
         "Importance": importances
     }).sort_values("Importance", ascending=False)
-    
+
     return results_df, catboost_importance
 
 # Read the csv data

@@ -39,7 +39,7 @@ def regResults(features, model_name, y_true_log, y_pred_log):
         "RMSE": rmse
     }
 
-def plotCatBoostImportance(catboost_importance):
+def plotCatBoostImportance(catboost_importance, title):
     """
     Plot the features importance in descending order
     """
@@ -50,4 +50,4 @@ def plotCatBoostImportance(catboost_importance):
     plt.ylabel("")
     plt.xlabel("")
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f"outputs/{title}.png", dpi=300, bbox_inches='tight')

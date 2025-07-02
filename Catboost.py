@@ -80,17 +80,33 @@ df_log = df.assign(price=np.log1p(df['price']))
 
 # Rerunning our best model with all features
 # and finding most important features
+# and spliting the dataset with houses and apartments
 
-start = time.time()
-results_df, catboost_importance = modelCAT(df_log, target, "Rerun - All features")
-end = time.time()
+df_hs = df_log[df_log['type_encoded'] == 1]  # Houses
+df_apt = df_log[df_log['type_encoded'] == 0]  # Apartments
 
-code_run = round((end - start) / 60, 3)
-results_df.at[results_df.index[-1], "Runtime (min)"] = code_run
+datasets = {
+    "All properties": df_log,
+    "Only Houses": df_hs,
+    "Only Apartments": df_apt
+}
 
-results_df = results_df.sort_values("RMSE (Test)", ascending=True)
 
-print("\nSummary of Regression Results:")
-print(results_df)
+for data, subset in datasets.items():
 
-plotCatBoostImportance(catboost_importance)
+    start = time.time()
+    results_df, catboost_importance = modelCAT(subset, target, data)
+    end = time.time()
+
+    code_run = round((end - start) / 60, 3)
+    results_df.at[results_df.index[-1], "Runtime (min)"] = code_run
+
+    results_df = results_df.sort_values("RMSE (Test)", ascending=True)
+
+    print("\nSummary of Regression Results:")
+    print(results_df)
+    
+
+    plotCatBoostImportance(catboost_importance, f"{data} - Feature Importances")
+
+results_df.to_csv("outputs/results_catboost.csv", index=False)

@@ -137,7 +137,10 @@ The project requires the following Python packages:
 ![image](https://github.com/user-attachments/assets/54068764-336d-4250-b69a-93f49ac03f67)
 
 ## Model comparison showing R2 score for training and test sets
-![Model comparisons graphic R2](https://github.com/user-attachments/assets/8ad40a7e-9053-4ba4-bd77-3d2043ddc173)
+![Results_Train_v_Test_log_scale](https://github.com/user-attachments/assets/27e043d7-f3a4-48d8-a641-099c393db853)
+
+## R2 Score per Model and features set with Cross Validation on test
+![Results_by_Model_log_scale](https://github.com/user-attachments/assets/b5473f50-9398-4875-955b-e505009c30df)
 
 # Contributors
  * Caterina

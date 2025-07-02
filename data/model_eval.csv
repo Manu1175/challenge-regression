@@ -1,0 +1,12 @@
+Model Name	R2 train	R2 test	RMSE train	RMSE test	MAE train	MAE test	EVS train	EVS test	CV mean score
+LinearRegression/Polynomial - All Features	0.634	0.622	100087€	100451€	73704€	73936€	0.63	0.62	0.629
+Ridge - All Features	0.520	0.509	114572€	114553€	85013€	84856€	0.52	0.51	0.517
+Lasso - All Features	0.520	0.509	114572€	114553€	85013€	84856€	0.52	0.51	0.517
+ElasticNet - All Features	0.482	0.472	119109€	118792€	89880€	89267€	0.48	0.47	0.479
+GradientBoosting - All Features	0.695	0.674	91438€	93363€	67231€	68486€	0.69	0.67	0.682
+RandomForest - (All features)	0.961	0.710	32794€	87978€	23223€	62154€	0.96	0.71	0.723
+XGBoost - (All features)	0.826	0.736	69063€	83942€	49913€	59366€	0.83	0.74	0.740
+CatBoost Regressor - (All features)	0.852	0.728	63585€	85190€	46347€	59869€	0.85	0.73	0.739
+RandomForest - (All features) (Log Price)	0.965	0.746	0€	0€	0€	0€	0.97	0.75	0.723
+XGBoost - (All features) (Log Price)	0.838	0.764	0€	0€	0€	0€	0.84	0.76	0.740
+CatBoost Regressor - (All features) (Log Price)	0.862	0.765	0€	0€	0€	0€	0.86	0.76	0.739

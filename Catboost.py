@@ -7,7 +7,8 @@ import numpy as np
 import time
 import warnings
 warnings.filterwarnings("ignore") 
-
+import os
+os.makedirs("outputs", exist_ok=True)
 
 from sklearn.model_selection import KFold, cross_val_predict
 from sklearn.model_selection import KFold, RepeatedKFold, cross_val_predict, GridSearchCV, RandomizedSearchCV, train_test_split
@@ -91,11 +92,12 @@ datasets = {
     "Only Apartments": df_apt
 }
 
+results_df = None
 
 for data, subset in datasets.items():
 
     start = time.time()
-    results_df, catboost_importance = modelCAT(subset, target, data)
+    results_df, catboost_importance = modelCAT(subset, target, data, results_df=results_df)
     end = time.time()
 
     code_run = round((end - start) / 60, 3)
